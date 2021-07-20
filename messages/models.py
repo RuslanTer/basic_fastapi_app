@@ -9,7 +9,7 @@ class Messages(models.Model):
 
     id = fields.IntField(pk=True)
     phone = fields.CharField(max_length=25)
-    email = fields.CharField(max_length=100, null=True)
+    email = fields.CharField(max_length=100)
     message = fields.TextField(null=True)
 
 
