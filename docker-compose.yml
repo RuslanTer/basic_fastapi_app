@@ -1,0 +1,39 @@
+version: '3.9'
+#Внешние волюмы
+volumes:
+    spectr:
+        external: true
+
+# Сервисы
+services:
+
+  # Постгрес
+  spectr_postgres:
+    restart: always
+    image: postgres:13
+    container_name: spectr_postgres
+    command: postgres -c 'max_connections=5000'
+    ports:
+      - 5432:5432
+    volumes:
+      - spectr:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: spectr
+      POSTGRES_USER: spectr
+      POSTGRES_DB: spectr
+
+  #   Ядро
+  spectr_web_core:
+    build: .
+    restart: on-failure
+    command: bash -c "aerich init-db && uvicorn app:app --host 0.0.0.0 --port 80"
+    container_name: spectr_web_core
+    volumes:
+      - .:/app
+    ports:
+      - 80:80
+    env_file:
+      - .env
+
+    depends_on:
+     - spectr_postgres

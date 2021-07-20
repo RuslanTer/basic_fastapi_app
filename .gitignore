@@ -1,0 +1,10 @@
+.idea/
+# Distribution / packaging
+.Python
+# Environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
